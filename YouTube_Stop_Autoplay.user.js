@@ -1,6 +1,7 @@
 ﻿// ==UserScript==
 // @name        YouTube: Remove Autoplay
 // @namespace   youtubeRemoveAutoplay
+// @description Disables the autoplay function
 // @version     1.0
 // @include     http://*youtube.com/*
 // @include     https://*youtube.com/*
