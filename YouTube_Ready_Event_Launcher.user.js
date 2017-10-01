@@ -9,7 +9,8 @@
 // ==/UserScript==
 
 function chainFunctionGenerator(defaultFunctionArg, chainNameArg) {
-//Implement: function priorities (implies multiple link lists)
+//Returns a modified function that runs the 'links'(functions) added to it, after running the links it runs an optional default function
+//The arguments and return values are chained, the return value of a link passed as an argument to the next
 	var chain = function() {
 		if (chain.useExternalArgsAsChainData) {
 			var chainData = arguments;
@@ -43,6 +44,7 @@ function chainFunctionGenerator(defaultFunctionArg, chainNameArg) {
 	chain.defaultFunction = defaultFunctionArg;
 	
 	chain.useExternalArgsAsChainData = true;
+	//If enabled the first link gets the arguments passed to the function
 	
 	chain._link = function(functionArg, nameArg, tryCatchExecArg) {
 		this.name = nameArg;
@@ -51,14 +53,18 @@ function chainFunctionGenerator(defaultFunctionArg, chainNameArg) {
 	};
 	
 	chain.add = function(functionArg, name, tryCatchExec) {
-		chain.links.push(new chain._link(functionArg, name, tryCatchExec));
+	//Adds a new 'link', takes a function, a name, and a boolean indicating if the function needs to run inside a try/catch block
+	//Returns the position of the 'link' in the chain
+		retrun (chain.links.push(new chain._link(functionArg, name, tryCatchExec)) - 1);
 	};
 	
 	chain.remove = function(position) {
+	//Removes a 'link' from the specified position
 		chain.links.splice(position, 1);
 	};
 	
 	chain.insertAt = function(position, functionArg, name, tryCatchExec) {
+	//Inserts a new link at the specified position, takes the same arguments as the 'add' method
 		var insFunction = new chain._link(functionArg, name, tryCatchExec);
 		chain.links.splice(position, 0, insFunction);
 	};
@@ -67,6 +73,7 @@ function chainFunctionGenerator(defaultFunctionArg, chainNameArg) {
 }
 
 function elementSelector(videoApi) {
+//Takes the argument passed to 'onYoutubePlayerReady', uses the configuration to determine the caller video, and if it was not previously selected passes it to the next link in the chain
 	var ytVideoId = videoApi.getUpdatedConfigurationData().attrs.id;
 	var videoElement = document.getElementById(ytVideoId);
 	var selectedFlag = 'GMYtSelected';
@@ -77,6 +84,7 @@ function elementSelector(videoApi) {
 }
 
 function eventLauncher(element) {
+//Generates the custom event 'GMYtPlayerReady' on the selected video and flags it as selected
 	var selectedFlag = 'GMYtSelected';
 	var GMYtReadyEventName = 'GMYtPlayerReady';
 	
@@ -105,6 +113,7 @@ if (setOnYouTubePlayerReady) {
 }
 
 window.addEventListener('GMYtAddEventListenerReplaced', function(evt) {
+//Listens to the custom event 'GMYtAddEventListenerReplaced', checks if the element where the event was generated is a valid youtube video and raises a custom event 'GMYtPlayerFirstStateChange' 
 	if ((evt.target.getAttribute('class').indexOf('html5-video-player') + 1)) {
 		evt.target.addEventListener('onStateChange', (function() {
 			var target = evt.target;
