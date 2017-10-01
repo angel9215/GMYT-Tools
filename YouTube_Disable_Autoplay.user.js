@@ -1,5 +1,6 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name        YouTube: Disable Autoplay
+// @description Disables autoplay and removes autoplay button from youtube's watch page
 // @namespace   youtubeDisableAutoplay
 // @version     1.0
 // @include     http://*youtube.com/*
