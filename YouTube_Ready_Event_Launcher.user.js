@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name        YouTube: Ready Event Launcher
+// @description Generates custom events during youtube player's initialization
 // @namespace   youtubeReadyEventLauncher
 // @version     1.0
 // @include     http://*youtube.com*
