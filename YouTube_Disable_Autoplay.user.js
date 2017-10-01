@@ -9,11 +9,13 @@
 // ==/UserScript==
 
 function hideUpNext() {
+//Hides the separation line and title for the 'Up next' item
 	document.getElementsByClassName('watch-sidebar-separation-line')[0].style.display = 'none';
 	document.getElementsByClassName('watch-sidebar-head')[0].style.display = 'none';
 }
 
 function removeAutoplay() {
+//Removes the autoplay button and hides the 'Up next' elements
 	var autoplayButton = document.getElementById('autoplay-checkbox').parentElement;
 	var autoplayContainer = autoplayButton.parentElement;
 	
