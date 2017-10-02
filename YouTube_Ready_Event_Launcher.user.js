@@ -20,16 +20,15 @@ function chainFunctionGenerator(defaultFunctionArg, chainNameArg) {
 		}
 		
 		for (var i = 0; i < chain.links.length; i++) {
-			if(chain.links[i].tryCatchExec) {
-				try {
-					chainData = chain.links[i].linkFunction.apply(this, chainData);
-					chainData = [chainData];
-				} catch(ex) {
-					console.log(ex.message);
-				}
-			} else {
+			try {
 				chainData = chain.links[i].linkFunction.apply(this, chainData);
 				chainData = [chainData];
+			} catch(ex) {
+				console.log(ex.message);
+				
+				if(!chain.links[i].continueOnException) {
+					break;
+				}
 			}
 		}
 		
@@ -47,16 +46,16 @@ function chainFunctionGenerator(defaultFunctionArg, chainNameArg) {
 	chain.useExternalArgsAsChainData = true;
 	//If enabled the first link gets the arguments passed to the function
 	
-	chain._link = function(functionArg, nameArg, tryCatchExecArg) {
+	chain._link = function(functionArg, nameArg, continueOnExceptionArg) {
 		this.name = nameArg;
 		this.linkFunction = functionArg;
-		this.tryCatchExec = tryCatchExecArg;
+		this.continueOnException = continueOnExceptionArg;
 	};
 	
-	chain.add = function(functionArg, name, tryCatchExec) {
-	//Adds a new 'link', takes a function, a name, and a boolean indicating if the function needs to run inside a try/catch block
+	chain.add = function(functionArg, name, continueOnException) {
+	//Adds a new 'link', takes a function, a name, and a boolean indicating if the chain will continue executing if an exception happens
 	//Returns the position of the 'link' in the chain
-		retrun (chain.links.push(new chain._link(functionArg, name, tryCatchExec)) - 1);
+		retrun (chain.links.push(new chain._link(functionArg, name, continueOnException)) - 1);
 	};
 	
 	chain.remove = function(position) {
@@ -64,9 +63,9 @@ function chainFunctionGenerator(defaultFunctionArg, chainNameArg) {
 		chain.links.splice(position, 1);
 	};
 	
-	chain.insertAt = function(position, functionArg, name, tryCatchExec) {
+	chain.insertAt = function(position, functionArg, name, continueOnException) {
 	//Inserts a new link at the specified position, takes the same arguments as the 'add' method
-		var insFunction = new chain._link(functionArg, name, tryCatchExec);
+		var insFunction = new chain._link(functionArg, name, continueOnException);
 		chain.links.splice(position, 0, insFunction);
 	};
 	
