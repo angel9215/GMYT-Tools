@@ -9,7 +9,7 @@
 // @run-at      document-start
 // ==/UserScript==
 
-function chainFunctionGenerator(defaultFunctionArg, chainNameArg) {
+function chainFunctionGenerator(defaultFunctionArg, chainIdArg) {
 //Returns a modified function that runs the 'links'(functions) added to it, after running the links it runs an optional default function
 //The arguments and return values are chained, the return value of a link passed as an argument to the next
 	var chain = function() {
@@ -39,7 +39,7 @@ function chainFunctionGenerator(defaultFunctionArg, chainNameArg) {
 		return chainData;
 	}
 	
-	chain.nameId = chainNameArg;
+	chain.chainId = chainIdArg;
 	chain.links = [];
 	chain.defaultFunction = defaultFunctionArg;
 	
@@ -98,7 +98,7 @@ var chainFunctionId = 'readyEventGenerator';
 var setOnYouTubePlayerReady = true;
 var chainFunction = window.onYouTubePlayerReady;
 while (chainFunction) {
-	if (chainFunction.nameId == chainFunctionId) {
+	if (chainFunction.chainId == chainFunctionId) {
 		setOnYouTubePlayerReady = false;
 		break;
 	}
