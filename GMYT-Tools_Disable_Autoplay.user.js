@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        YouTube: Disable Autoplay
+// @name        GMYT-Tools: Disable Autoplay
 // @description Disables autoplay and removes autoplay button from youtube's watch page
 // @namespace   youtubeDisableAutoplay
 // @version     1.0
